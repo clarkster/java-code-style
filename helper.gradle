@@ -1,0 +1,41 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        maven {
+            url 'https://plugins.gradle.org/m2/'
+        }
+    }
+    dependencies {
+        classpath 'com.palominolabs.gradle.task:gradle-git-clone-task:0.0.2'
+
+        /**
+         * Git properties plugin adds the git checkout hash/date to a properties file. For Spring Boot applications
+         * this will automatically be picked up and included in the /info endpoint
+         */
+        classpath 'gradle.plugin.com.gorylenko.gradle-git-properties:gradle-git-properties:1.4.11'
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+apply plugin: 'java'
+apply plugin: 'checkstyle'
+apply plugin: 'findbugs'
+
+task cloneCodeStyleRepo(type: com.palominolabs.gradle.task.git.clone.GitCloneTask) {
+    description 'Checks out the default style guide configuration and saves to .code-style'
+    dir = new File(projectDir, '.code-style')
+    uri = 'git@github.com:clarkster/java-code-style.git'
+    treeish = 'origin/master'
+    outputs.dir dir
+}
+
+checkstyle {
+    toolVersion = '6.2'
+    config = resources.text.fromFile(new File(cloneCodeStyleRepo.dir, 'checkstyle.xml'))
+    ignoreFailures = false
+}
+
+checkstyleMain.dependsOn cloneCodeStyleRepo
