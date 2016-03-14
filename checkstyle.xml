@@ -10,7 +10,8 @@
        https://google-styleguide.googlecode.com/svn-history/r130/trunk/javaguide.html
        
     Local Modificiations:   
-     - Modified from the default guide to use severity=error by default
+     - Use severity=error by default. Configure specific warning level for missing javadoc
+     - Package imports use com.mands as company name
     
  -->
  
@@ -148,7 +149,7 @@
         <module name="VariableDeclarationUsageDistance"/>
         <module name="CustomImportOrder">
             <property name="thirdPartyPackageRegExp" value=".*"/>
-            <property name="specialImportsRegExp" value="com.google"/>
+            <property name="specialImportsRegExp" value="com.mands"/>
             <property name="sortImportsInGroupAlphabetically" value="true"/>
             <property name="customImportOrderRules" value="STATIC###SPECIAL_IMPORTS###THIRD_PARTY_PACKAGE###STANDARD_JAVA_PACKAGE"/>
         </module>
